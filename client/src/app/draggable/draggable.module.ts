@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DraggableDirective } from './draggable.directive';
-import { DraggableRxDirective } from './draggableRx.directive';
 import { MovableDirective } from './movable.directive';
 import { MovableAreaDirective } from './movable-area.directive';
 
@@ -9,7 +8,7 @@ import { MovableAreaDirective } from './movable-area.directive';
   imports: [
     CommonModule
   ],
-  declarations: [DraggableDirective, DraggableRxDirective, MovableDirective, MovableAreaDirective],
-  exports: [DraggableDirective, DraggableRxDirective, MovableDirective, MovableAreaDirective]
+  declarations: [DraggableDirective, MovableDirective, MovableAreaDirective],
+  exports: [DraggableDirective, MovableDirective, MovableAreaDirective]
 })
 export class DraggableModule { }
