@@ -1,4 +1,5 @@
 .chess-board {
+  position: relative;
   --cell-background: #4b7398;
   display: flex;
   flex-wrap: wrap;

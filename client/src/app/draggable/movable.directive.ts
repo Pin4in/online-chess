@@ -8,30 +8,32 @@ interface Position {
 }
 
 @Directive({
-  selector: '[appMovable]'
+  selector: '[appMovable]',
 })
 export class MovableDirective extends DraggableDirective {
-  @HostBinding('style.transform') get transform(): SafeStyle {
-    return this.sanitizer.bypassSecurityTrustStyle(
-      `translateX(${this.position.x}px) translateY(${this.position.y}px)`
-    );
-  }
+  // @HostBinding('style.transform') get transform(): SafeStyle {
+  //   return this.sanitizer.bypassSecurityTrustStyle(
+  //     `translateX(${this.position.x}px) translateY(${this.position.y}px)`
+  //   );
+  // }
 
   @HostBinding('class.movable') movable = true;
 
   public position: Position = {x: 0, y: 0};
   private startPosition: Position;
   private endPosition: Position = {x: 0, y: 0};
+  public isMoving = false;
 
   @Input()
   appMovableReset: Boolean = false;
 
-  constructor( private sanitizer: DomSanitizer, public element: ElementRef) {
+  constructor( public sanitizer: DomSanitizer, public element: ElementRef) {
     super();
   }
 
   @HostListener('dragStart', ['$event'])
   onDragStart(event: PointerEvent) {
+    this.isMoving = true;
     this.startPosition = {
       x: event.clientX - this.position.x,
       y: event.clientY - this.position.y
@@ -44,6 +46,7 @@ export class MovableDirective extends DraggableDirective {
   }
   @HostListener('dragEnd', ['$event'])
   onDragEnd(event: PointerEvent) {
+    console.log('called');
     if (this.appMovableReset) {
       this.position = {x: 0, y: 0};
     }

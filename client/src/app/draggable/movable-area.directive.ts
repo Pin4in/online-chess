@@ -1,5 +1,4 @@
 import { Directive, ContentChildren, QueryList, AfterContentInit, ElementRef, Input } from '@angular/core';
-import { MovableDirective } from './movable.directive';
 import { ChessFigureDirective } from '../chess-field/chess-figure.directive';
 import { Subscription } from 'rxjs';
 

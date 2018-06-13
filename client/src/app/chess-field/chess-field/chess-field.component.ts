@@ -1,12 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldStateService } from '../field-state.service';
-// import { ChessFigureComponent } from '../chess-figure/chess-figure.component';
-// import {  faChessPawn,
-//           faChessRook,
-//           faChessQueen,
-//           faChessKnight,
-//           faChessKing,
-//           faChessBishop } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chess-field',
