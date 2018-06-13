@@ -1,5 +1,6 @@
-import { Directive, ContentChildren, QueryList, AfterContentInit, ElementRef } from '@angular/core';
+import { Directive, ContentChildren, QueryList, AfterContentInit, ElementRef, Input } from '@angular/core';
 import { MovableDirective } from './movable.directive';
+import { ChessFigureDirective } from '../chess-field/chess-figure.directive';
 import { Subscription } from 'rxjs';
 
 interface Bounderies {
@@ -13,8 +14,7 @@ interface Bounderies {
   selector: '[appMovableArea]'
 })
 export class MovableAreaDirective implements AfterContentInit {
-
-  @ContentChildren(MovableDirective) movables: QueryList<MovableDirective>;
+  @ContentChildren(ChessFigureDirective) movables: QueryList<ChessFigureDirective>;
 
   private boundaries: Bounderies;
   private subscriptions: Subscription[] = [];
@@ -34,7 +34,7 @@ export class MovableAreaDirective implements AfterContentInit {
     this.movables.notifyOnChanges();
   }
 
-  private measureBounderies(movable: MovableDirective) {
+  private measureBounderies(movable: ChessFigureDirective) {
     const viewRect: ClientRect = this.element.nativeElement.getBoundingClientRect();
     const movableClientRect: ClientRect = movable.element.nativeElement.getBoundingClientRect();
 
@@ -46,7 +46,7 @@ export class MovableAreaDirective implements AfterContentInit {
     };
   }
 
-  private maintainBoundaries(movable: MovableDirective) {
+  private maintainBoundaries(movable: ChessFigureDirective) {
     movable.position.x = Math.max(this.boundaries.minX, movable.position.x);
     movable.position.x = Math.min(this.boundaries.maxX, movable.position.x);
     movable.position.y = Math.max(this.boundaries.minY, movable.position.y);

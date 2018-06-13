@@ -44,17 +44,6 @@ export class MovableDirective extends DraggableDirective {
   }
   @HostListener('dragEnd', ['$event'])
   onDragEnd(event: PointerEvent) {
-    const cellSize = 50;
-    const shiftX = this.position.x / cellSize;
-    const shiftY = this.position.y / cellSize;
-    this.position.x = shiftX < -0.65 || shiftX > 0.65
-      ? cellSize * Math.round(shiftX)
-      : 0;
-
-    this.position.y = shiftY < -0.65 || shiftY > 0.65
-      ? cellSize * Math.round(shiftY)
-      : 0;
-
     if (this.appMovableReset) {
       this.position = {x: 0, y: 0};
     }

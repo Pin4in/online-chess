@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  height: 100%;
+}
+.figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+
+  font-size: 2rem;
+}
+
+.white {
+  color: #df9b03;
+}
