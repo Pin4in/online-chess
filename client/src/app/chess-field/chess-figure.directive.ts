@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostBinding, HostListener, Self, Host, OnInit } from '@angular/core';
-import { MovableDirective } from '../draggable/movable.directive';
+import { DraggableDirective } from '../draggable/draggable.directive';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { FieldStateService } from './field-state.service';
 import { ChessFigureComponent } from './chess-figure/chess-figure.component';
@@ -13,7 +13,7 @@ interface Position {
 @Directive({
   selector: '[appChessFigure]'
 })
-export class ChessFigureDirective extends MovableDirective implements OnInit {
+export class ChessFigureDirective extends DraggableDirective implements OnInit {
   @HostBinding('style.top') get top(): SafeStyle {
     return this.sanitizer.bypassSecurityTrustStyle(
       `${this.position.y}px`
@@ -30,14 +30,17 @@ export class ChessFigureDirective extends MovableDirective implements OnInit {
       `absolute`
     );
   }
-  @HostBinding('class.moving') isMoving = false;
-  constructor(sanetizer: DomSanitizer,
-    element: ElementRef,
-    private fieldState: FieldStateService,
+  @HostBinding('class.movable') movable = true;
+  @HostBinding('class.is-moving') isMoving = false;
+  constructor(private sanitizer: DomSanitizer, private fieldState: FieldStateService,
+    public element: ElementRef,
     @Host() @Self() private ctrl: ChessFigureComponent) {
-    super(sanetizer, element);
+    super();
   }
+  public position: Position = {x: 0, y: 0};
+
   private defaultPos;
+  private startPosition: Position;
   private lastPosition;
   private cellSize = 50;
 
@@ -49,6 +52,19 @@ export class ChessFigureDirective extends MovableDirective implements OnInit {
       y: this.position.y
     };
     this.lastPosition = Object.assign({}, this.defaultPos);
+  }
+  @HostListener('dragStart', ['$event'])
+  onDragStart(event: PointerEvent) {
+    this.isMoving = true;
+    this.startPosition = {
+      x: event.clientX - this.position.x,
+      y: event.clientY - this.position.y
+    };
+  }
+  @HostListener('dragMove', ['$event'])
+  onDragMove(event: PointerEvent) {
+    this.position.x = event.clientX - this.startPosition.x;
+    this.position.y = event.clientY - this.startPosition.y;
   }
   @HostListener('dragEnd', ['$event'])
   onDragEnd(event: PointerEvent) {

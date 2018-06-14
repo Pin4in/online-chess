@@ -3,6 +3,9 @@
   height: 50px;
   width: 50px;
 }
+:host.is-moving {
+  z-index: 9999;
+}
 .figure {
   display: flex;
   justify-content: center;
