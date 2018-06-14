@@ -112,10 +112,6 @@ export class FieldStateService {
   private makeMove(figure, shift): void {
     const x = shift.x;
     const y = shift.y;
-    // if (this.state[y][x] !== 'x') {
-    //   console.log('occupied');
-    //   return;
-    // }
 
     this.state[y][x] = figure.id;
     this.state[figure.y][figure.x] = 'x';
@@ -154,9 +150,6 @@ export class FieldStateService {
   }
 
   moveFigure(figure, shift): boolean {
-    // console.log('moveFigure');
-    // console.log('lastPosition', figure.x, figure.y);
-    // console.log('newPosition', Object.assign({}, shift));
     if (!this.validPawnMove(figure, shift)) {
       return false;
     } else {
