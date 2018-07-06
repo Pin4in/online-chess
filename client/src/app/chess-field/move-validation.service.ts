@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FieldStateService } from './field-state.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +9,9 @@ export class MoveValidationService {
   }
 
   private canKill(pos, side, fieldState): boolean {
+    const targetSide = fieldState[pos.y][pos.x].indexOf('-w-') !== -1 ? true : false;
     return fieldState[pos.y][pos.x] !== 'x'
-        && fieldState[pos.y][pos.x].side !== side;
+        && targetSide !== side;
   }
 
   validPawnMove(figure, newPosition, fieldState): boolean {
