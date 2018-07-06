@@ -19,6 +19,7 @@ interface FigureMeta {
 
 interface PawnMeta extends FigureMeta {
   firstMove: boolean;
+  enPassant: boolean;
 }
 
 @Injectable({
@@ -61,7 +62,7 @@ export class FieldStateService {
       y,
     };
     if (item === 'p') {
-      const pawn: PawnMeta = Object.assign({firstMove: true}, figure);
+      const pawn: PawnMeta = Object.assign({firstMove: true, enPassant: false}, figure);
       this.figures[id] = pawn;
     } else {
       this.figures[id] = figure;
@@ -131,9 +132,14 @@ export class FieldStateService {
   moveFigure(figure, newPosition): boolean {
     switch (figure.type) {
       case 'p': {
-        console.log('here');
+        // todo: suppoer En Passant move.
         if (!this.MoveValidation.validPawnMove(figure, newPosition, this.state)) {
           return false;
+        }
+        if (this.figures[figure.id].firstMove) {
+          this.figures[figure.id].enPassant = true;
+        } else {
+          this.figures[figure.id].enPassant = false;
         }
         this.figures[figure.id].firstMove = false;
         break;
@@ -142,6 +148,34 @@ export class FieldStateService {
         if (!this.MoveValidation.validKnightMove(figure, newPosition, this.state)) {
           return false;
         }
+        break;
+      }
+      case 'b': {
+        if (!this.MoveValidation.validBishopMove(figure, newPosition, this.state)) {
+          return false;
+        }
+        break;
+      }
+      case 'r': {
+        if (!this.MoveValidation.validRookMove(figure, newPosition, this.state)) {
+          return false;
+        }
+        break;
+      }
+      case 'q': {
+        if (!this.MoveValidation.validQueenMove(figure, newPosition, this.state)) {
+          return false;
+        }
+        break;
+      }
+      case 'k': {
+        // todo:
+        //  - support castling;
+        //  - support check;
+        if (!this.MoveValidation.validKingMove(figure, newPosition, this.state)) {
+          return false;
+        }
+        break;
       }
     }
 

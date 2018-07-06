@@ -15,38 +15,14 @@ export class MoveValidationService {
   }
 
   validPawnMove(figure, newPosition, fieldState): boolean {
-    let x, y;
-    const freeCell = !this.isOccupied(newPosition, fieldState);
-    if (figure.side) {
-      x = figure.x - newPosition.x;
-      y = figure.y - newPosition.y;
-    } else {
-      x = newPosition.x - figure.x;
-      y = newPosition.y - figure.y;
-    }
-
-    if (y > 0 && y < 3 && x === 0) {
-      if (y === 1 && freeCell) {
-        return true;
-      }
-      if (y === 2 && freeCell && figure.firstMove) {
-        return true;
-      }
-    }
-    if (this.canKill(newPosition, figure.side, fieldState) && y === 1 && (x === 1 || x === -1)) {
-      return true;
-    }
-    return false;
-  }
-
-  validKnightMove(figure, newPosition, fieldState): boolean {
     const x = Math.abs(figure.x - newPosition.x);
     const y = Math.abs(figure.y - newPosition.y);
 
-    const horizontalMove = x === 2 && y === 1;
-    const verticalMove = x === 1 && y === 2;
+    const doubleMove = y === 2 && x === 0 && figure.firstMove;
+    const simpleMove = y === 1 && x === 0;
+    const killMove = y === 1 && x === 1;
 
-    if (horizontalMove || verticalMove) {
+    if (doubleMove || simpleMove || killMove) {
       if (!this.isOccupied(newPosition, fieldState)) {
         return true;
       }
@@ -55,11 +31,104 @@ export class MoveValidationService {
         return true;
       }
     }
+
+    return false;
+  }
+
+  validKnightMove(figure, newPosition, fieldState): boolean {
+    const x = Math.abs(figure.x - newPosition.x);
+    const y = Math.abs(figure.y - newPosition.y);
+
+    const hMove = x === 2 && y === 1;
+    const vMove = x === 1 && y === 2;
+
+    if (hMove || vMove) {
+      if (!this.isOccupied(newPosition, fieldState)) {
+        return true;
+      }
+
+      if (this.canKill(newPosition, figure.side, fieldState)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
   validRookMove(figure, newPosition, fieldState): boolean {
+    const x = Math.abs(figure.x - newPosition.x);
+    const y = Math.abs(figure.y - newPosition.y);
+
+    const hMove = x > 0 && y === 0;
+    const vMove = x === 0 && y > 0;
+
+    if (hMove || vMove) {
+      if (!this.isOccupied(newPosition, fieldState)) {
+        return true;
+      }
+      if (this.canKill(newPosition, figure.side, fieldState)) {
+        return true;
+      }
+    }
 
     return false;
   }
+  validBishopMove(figure, newPosition, fieldState): boolean {
+    const x = Math.abs(figure.x - newPosition.x);
+    const y = Math.abs(figure.y - newPosition.y);
+
+    const dMove = x === y && x !== 0;
+
+    if (dMove) {
+      if (!this.isOccupied(newPosition, fieldState)) {
+        return true;
+      }
+      if (this.canKill(newPosition, figure.side, fieldState)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  validQueenMove(figure, newPosition, fieldState): boolean {
+    const x = Math.abs(figure.x - newPosition.x);
+    const y = Math.abs(figure.y - newPosition.y);
+
+    const hMove = x > 0 && y === 0;
+    const vMove = x === 0 && y > 0;
+    const dMove = x === y && x !== 0;
+
+    if (hMove || vMove || dMove) {
+      if (!this.isOccupied(newPosition, fieldState)) {
+        return true;
+      }
+      if (this.canKill(newPosition, figure.side, fieldState)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  validKingMove(figure, newPosition, fieldState): boolean {
+    const x = Math.abs(figure.x - newPosition.x);
+    const y = Math.abs(figure.y - newPosition.y);
+
+    const hMove = x === 1 && y === 0;
+    const vMove = x === 0 && y === 1;
+    const dMove = x === 1 && y === 1;
+
+    if (hMove || vMove || dMove) {
+      if (!this.isOccupied(newPosition, fieldState)) {
+        return true;
+      }
+      if (this.canKill(newPosition, figure.side, fieldState)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
