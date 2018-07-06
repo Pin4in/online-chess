@@ -33,3 +33,7 @@
 .chess-board .row:nth-child(odd) .cell:nth-child(even) {
   background-color: var(--cell-background);
 }
+
+.chess-board .dead {
+  display: none;
+}

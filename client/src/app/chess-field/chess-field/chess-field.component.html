@@ -1,7 +1,7 @@
 <div class="chess-board" appMovableArea>
   <div *ngFor="let row of field" class="row">
-    <div *ngFor="let cell of row" class="cell">
-      <app-chess-figure appChessFigure *ngIf="cell.type" [figure]="cell"></app-chess-figure>
+    <div *ngFor="let item of row" class="cell">
+      <app-chess-figure appChessFigure *ngIf="item.type" [figure]="item" [ngClass]="{'dead': !item.alive}"></app-chess-figure>
     </div>
   </div>
 </div>

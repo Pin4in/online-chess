@@ -25,11 +25,7 @@ export class ChessFigureDirective extends DraggableDirective implements OnInit {
       `${this.position.x}px`
     );
   }
-  @HostBinding('style.position') get getPosition(): SafeStyle {
-    return this.sanitizer.bypassSecurityTrustStyle(
-      `absolute`
-    );
-  }
+
   @HostBinding('class.movable') movable = true;
   @HostBinding('class.is-moving') isMoving = false;
   constructor(private sanitizer: DomSanitizer, private fieldState: FieldStateService,

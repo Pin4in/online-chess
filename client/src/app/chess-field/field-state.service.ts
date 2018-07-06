@@ -5,6 +5,7 @@ import {  faChessPawn,
           faChessKnight,
           faChessKing,
           faChessBishop } from '@fortawesome/free-solid-svg-icons';
+import { MoveValidationService } from './move-validation.service';
 
 interface FigureMeta {
   type: string;
@@ -24,6 +25,7 @@ interface PawnMeta extends FigureMeta {
   providedIn: 'root'
 })
 export class FieldStateService {
+  constructor(private MoveValidation: MoveValidationService) {}
   private defaultPositions = [
     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
     ['r', 'n', 'b', 'k', 'q', 'b', 'n', 'r']
@@ -109,54 +111,41 @@ export class FieldStateService {
 
     return this.state;
   }
-  private makeMove(figure, shift): void {
-    const x = shift.x;
-    const y = shift.y;
+  private makeMove(figure, newPosition): void {
+    const target = this.state[newPosition.y][newPosition.x];
+    console.log('Target:', target);
+    // going for the kill
+    if (target !== 'x') {
+      this.figures[target].alive = false;
+    }
 
-    this.state[y][x] = figure.id;
+    // update last position
     this.state[figure.y][figure.x] = 'x';
-    this.figures[figure.id].x = x;
-    this.figures[figure.id].y = y;
+    // update new position
+    this.state[newPosition.y][newPosition.x] = figure.id;
+
+    // update current figure position info
+    this.figures[figure.id].x = newPosition.x;
+    this.figures[figure.id].y = newPosition.y;
   }
-
-  private validPawnMove(figure, newPosition): boolean {
-    let x, y;
-    const canKill = true;
-    const freeCell = true;
-    if (figure.side) {
-      x = figure.x - newPosition.x;
-      y = figure.y - newPosition.y;
-    } else {
-      x = newPosition.x - figure.x;
-      y = newPosition.y - figure.y;
-    }
-
-    if (y > 0 && y < 3 && x === 0) {
-      if (y === 1 && freeCell) {
-        console.log('simple move');
-        return true;
+  moveFigure(figure, newPosition): boolean {
+    switch (figure.type) {
+      case 'p': {
+        console.log('here');
+        if (!this.MoveValidation.validPawnMove(figure, newPosition, this.state)) {
+          return false;
+        }
+        this.figures[figure.id].firstMove = false;
+        break;
       }
-      if (y === 2 && freeCell && figure.firstMove) {
-        console.log('first move');
-        return true;
+      case 'n': {
+        if (!this.MoveValidation.validKnightMove(figure, newPosition, this.state)) {
+          return false;
+        }
       }
     }
-    if (canKill && y === 1 && (x === 1 || x === -1)) {
-      console.log('pawn kills');
-      return true;
-    }
-    console.log('unknown error');
-    return false;
-  }
 
-  moveFigure(figure, shift): boolean {
-    if (!this.validPawnMove(figure, shift)) {
-      return false;
-    } else {
-      this.figures[figure.id].firstMove = false;
-    }
-
-    this.makeMove(figure, shift);
+    this.makeMove(figure, newPosition);
     return true;
   }
 }

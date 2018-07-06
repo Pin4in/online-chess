@@ -6,6 +6,7 @@ import { ChessFigureDirective } from './chess-figure.directive';
 import { FieldStateService } from './field-state.service';
 import { ChessFieldComponent } from './chess-field/chess-field.component';
 import { DraggableModule } from '../draggable/draggable.module';
+import { MoveValidationService } from './move-validation.service';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { DraggableModule } from '../draggable/draggable.module';
     DraggableModule
   ],
   providers: [
-    FieldStateService
+    FieldStateService,
+    MoveValidationService
   ],
   declarations: [ChessFigureComponent, ChessFigureDirective, ChessFieldComponent],
   exports: [ChessFigureComponent, ChessFigureDirective, ChessFieldComponent]
