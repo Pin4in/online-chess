@@ -21,15 +21,17 @@ export class MoveValidationService {
     const doubleMove = y === 2 && x === 0 && figure.firstMove;
     const simpleMove = y === 1 && x === 0;
     const killMove = y === 1 && x === 1;
+    const isOccupied = this.isOccupied(newPosition, fieldState);
+    const canKill = this.canKill(newPosition, figure.side, fieldState);
 
-    if (doubleMove || simpleMove || killMove) {
-      if (!this.isOccupied(newPosition, fieldState)) {
+    if (doubleMove || simpleMove) {
+      if (!isOccupied) {
         return true;
       }
+    }
 
-      if (this.canKill(newPosition, figure.side, fieldState)) {
-        return true;
-      }
+    if (killMove && isOccupied && canKill) {
+      return true;
     }
 
     return false;
