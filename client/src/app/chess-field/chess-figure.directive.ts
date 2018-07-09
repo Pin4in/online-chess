@@ -49,8 +49,13 @@ export class ChessFigureDirective extends DraggableDirective implements OnInit {
     };
     this.lastPosition = Object.assign({}, this.defaultPos);
   }
+
   @HostListener('dragStart', ['$event'])
   onDragStart(event: PointerEvent) {
+    if (this.ctrl.activeSide !== this.ctrl.figure.side) {
+      return false;
+    }
+
     this.isMoving = true;
     this.startPosition = {
       x: event.clientX - this.position.x,
@@ -59,11 +64,19 @@ export class ChessFigureDirective extends DraggableDirective implements OnInit {
   }
   @HostListener('dragMove', ['$event'])
   onDragMove(event: PointerEvent) {
+    if (this.ctrl.activeSide !== this.ctrl.figure.side) {
+      return false;
+    }
+
     this.position.x = event.clientX - this.startPosition.x;
     this.position.y = event.clientY - this.startPosition.y;
   }
   @HostListener('dragEnd', ['$event'])
   onDragEnd(event: PointerEvent) {
+    if (this.ctrl.activeSide !== this.ctrl.figure.side) {
+      return false;
+    }
+
     this.isMoving = false;
     const x: number = Math.abs(this.position.x / this.cellSize) > 0.65
       ? Math.round(this.position.x / this.cellSize)

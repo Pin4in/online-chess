@@ -31,6 +31,7 @@ export class FieldStateService {
     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
     ['r', 'n', 'b', 'k', 'q', 'b', 'n', 'r']
   ];
+  public activeSide = true; // white by default
   public state;
   public figures = {};
   private figureIndex = 0;
@@ -128,6 +129,9 @@ export class FieldStateService {
     // update current figure position info
     this.figures[figure.id].x = newPosition.x;
     this.figures[figure.id].y = newPosition.y;
+
+
+    this.activeSide = !this.activeSide;
   }
   moveFigure(figure, newPosition): boolean {
     switch (figure.type) {

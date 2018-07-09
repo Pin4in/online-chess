@@ -7,4 +7,5 @@ import { Component, Input, OnInit, HostBinding } from '@angular/core';
 })
 export class ChessFigureComponent {
   @Input() figure;
+  @Input() activeSide;
 }
