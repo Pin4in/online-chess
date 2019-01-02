@@ -1,15 +1,8 @@
 import { Injectable } from '@angular/core';
-import {  faChessPawn,
-          faChessRook,
-          faChessQueen,
-          faChessKnight,
-          faChessKing,
-          faChessBishop } from '@fortawesome/free-solid-svg-icons';
 import { MoveValidationService } from './move-validation.service';
 
 interface FigureMeta {
   type: string;
-  icon: any;
   side: boolean;
   alive: boolean;
   id: string;
@@ -43,19 +36,9 @@ export class FieldStateService {
   }
 
   private makeFigureModel(item, x, y, side): string {
-    let icon = null;
-
-    if (item === 'r') { icon = faChessRook; }
-    if (item === 'n') { icon = faChessKnight; }
-    if (item === 'b') { icon = faChessBishop; }
-    if (item === 'q') { icon = faChessQueen; }
-    if (item === 'k') { icon = faChessKing; }
-    if (item === 'p') { icon = faChessPawn; }
-
     const id = this.getId(item, side);
     const figure: FigureMeta = {
       type: item,
-      icon,
       side,
       alive: true,
       id,
