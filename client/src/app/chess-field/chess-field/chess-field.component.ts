@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldStateService } from '../field-state.service';
+import { ChessBoardService } from '../field-state.service';
 
 @Component({
   selector: 'app-chess-field',
@@ -8,7 +8,7 @@ import { FieldStateService } from '../field-state.service';
 })
 export class ChessFieldComponent implements OnInit {
 
-  constructor(private fieldState: FieldStateService) { }
+  constructor(private fieldState: ChessBoardService) { }
 
   private field;
   ngOnInit() {

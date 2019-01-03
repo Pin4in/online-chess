@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ChessFigureComponent } from './chess-figure/chess-figure.component';
 import { ChessFigureDirective } from './chess-figure.directive';
-import { FieldStateService } from './field-state.service';
+import { ChessBoardService } from './field-state.service';
 import { ChessFieldComponent } from './chess-field/chess-field.component';
 import { DraggableModule } from '../draggable/draggable.module';
 import { MoveValidationService } from './move-validation.service';
@@ -15,7 +15,7 @@ import { MoveValidationService } from './move-validation.service';
     DraggableModule
   ],
   providers: [
-    FieldStateService,
+    ChessBoardService,
     MoveValidationService
   ],
   declarations: [ChessFigureComponent, ChessFigureDirective, ChessFieldComponent],

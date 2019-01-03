@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostBinding, HostListener, Self, Host, OnInit } from '@angular/core';
 import { DraggableDirective } from '../draggable/draggable.directive';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-import { FieldStateService } from './field-state.service';
+import { ChessBoardService } from './field-state.service';
 import { ChessFigureComponent } from './chess-figure/chess-figure.component';
 
 
@@ -28,7 +28,7 @@ export class ChessFigureDirective extends DraggableDirective implements OnInit {
 
   @HostBinding('class.movable') movable = true;
   @HostBinding('class.is-moving') isMoving = false;
-  constructor(private sanitizer: DomSanitizer, private fieldState: FieldStateService,
+  constructor(private sanitizer: DomSanitizer, private fieldState: ChessBoardService,
     public element: ElementRef,
     @Host() @Self() private ctrl: ChessFigureComponent) {
     super();

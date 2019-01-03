@@ -18,7 +18,7 @@ interface PawnMeta extends FigureMeta {
 @Injectable({
   providedIn: 'root'
 })
-export class FieldStateService {
+export class ChessBoardService {
   constructor(private MoveValidation: MoveValidationService) {}
   private defaultPositions = [
     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],

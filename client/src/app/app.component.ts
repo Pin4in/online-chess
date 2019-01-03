@@ -5,7 +5,7 @@ import { faChessPawn,
          faChessKnight,
          faChessKing,
          faChessBishop } from '@fortawesome/free-solid-svg-icons';
-import { FieldStateService } from './chess-field/field-state.service';
+import { ChessBoardService } from './chess-field/field-state.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { FieldStateService } from './chess-field/field-state.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private elem: ElementRef, public fState: FieldStateService) {}
+  constructor(private elem: ElementRef, public fState: ChessBoardService) {}
   title = 'app';
   faChessPawn = faChessPawn;
   faChessKnight = faChessKnight;
