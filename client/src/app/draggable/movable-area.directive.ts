@@ -1,5 +1,5 @@
-import { Directive, ContentChildren, QueryList, AfterContentInit, ElementRef, Input } from '@angular/core';
-import { ChessFigureDirective } from '../chess-field/chess-figure.directive';
+import { Directive, AfterContentInit, ElementRef, Input, ChangeDetectorRef } from '@angular/core';
+import { ChessFigureBehaviorDirective } from '../chess-field/chess-figure-behavior.directive';
 import { Subscription } from 'rxjs';
 
 interface Bounderies {
@@ -13,27 +13,29 @@ interface Bounderies {
   selector: '[appMovableArea]'
 })
 export class MovableAreaDirective implements AfterContentInit {
-  @ContentChildren(ChessFigureDirective) movables: QueryList<ChessFigureDirective>;
-
+  @Input() movableAreaPieces;
   private boundaries: Bounderies;
   private subscriptions: Subscription[] = [];
 
-  constructor(private element: ElementRef) {}
+  constructor(private element: ElementRef, private cd: ChangeDetectorRef) {}
 
   ngAfterContentInit(): void {
-    this.movables.changes.subscribe(() => {
-      this.subscriptions.forEach(s => s.unsubscribe());
+    setTimeout(() => {
+      this.movableAreaPieces.changes.subscribe(() => {
+        this.subscriptions.forEach(s => s.unsubscribe());
 
-      this.movables.forEach(movable => {
-        this.subscriptions.push(movable.dragStart.subscribe(() => this.measureBounderies(movable)));
-        this.subscriptions.push(movable.dragMove.subscribe(() => this.maintainBoundaries(movable)));
+        this.movableAreaPieces.forEach(movable => {
+          this.subscriptions.push(movable.dragStart.subscribe(() => this.measureBounderies(movable)));
+          this.subscriptions.push(movable.dragMove.subscribe(() => this.maintainBoundaries(movable)));
+        });
       });
-    });
 
-    this.movables.notifyOnChanges();
+      this.movableAreaPieces.notifyOnChanges();
+    });
   }
 
-  private measureBounderies(movable: ChessFigureDirective) {
+  private measureBounderies(movable: ChessFigureBehaviorDirective) {
+    console.log('drag start event caught');
     const viewRect: ClientRect = this.element.nativeElement.getBoundingClientRect();
     const movableClientRect: ClientRect = movable.element.nativeElement.getBoundingClientRect();
 
@@ -45,7 +47,7 @@ export class MovableAreaDirective implements AfterContentInit {
     };
   }
 
-  private maintainBoundaries(movable: ChessFigureDirective) {
+  private maintainBoundaries(movable: ChessFigureBehaviorDirective) {
     movable.position.x = Math.max(this.boundaries.minX, movable.position.x);
     movable.position.x = Math.min(this.boundaries.maxX, movable.position.x);
     movable.position.y = Math.max(this.boundaries.minY, movable.position.y);

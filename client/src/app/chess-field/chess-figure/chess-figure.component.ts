@@ -6,17 +6,18 @@ import { faChessPawn, faChessRook, faChessQueen, faChessKnight, faChessKing, faC
   templateUrl: './chess-figure.component.html',
   styleUrls: ['./chess-figure.component.css']
 })
-export class ChessFigureComponent implements OnInit {
-  @Input() figure;
-  @Input() activeSide;
+export class ChessFigureBehaviorComponent implements OnInit {
+  @Input() piece;
+
 
   public icon = null;
+  public empty = false;
   ngOnInit() {
-    if (this.figure.type === 'r') { this.icon = faChessRook; }
-    if (this.figure.type === 'n') { this.icon = faChessKnight; }
-    if (this.figure.type === 'b') { this.icon = faChessBishop; }
-    if (this.figure.type === 'q') { this.icon = faChessQueen; }
-    if (this.figure.type === 'k') { this.icon = faChessKing; }
-    if (this.figure.type === 'p') { this.icon = faChessPawn; }
+    if (this.piece.type === 'r') { this.icon = faChessRook; }
+    if (this.piece.type === 'n') { this.icon = faChessKnight; }
+    if (this.piece.type === 'b') { this.icon = faChessBishop; }
+    if (this.piece.type === 'q') { this.icon = faChessQueen; }
+    if (this.piece.type === 'k') { this.icon = faChessKing; }
+    if (this.piece.type === 'p') { this.icon = faChessPawn; }
   }
 }

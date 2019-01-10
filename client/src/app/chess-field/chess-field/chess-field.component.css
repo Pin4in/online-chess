@@ -1,6 +1,6 @@
 .chess-board {
   position: relative;
-  --cell-background: #4b7398;
+  --cell-background: #b58863;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -8,7 +8,7 @@
   width: 400px;
   font-size: 2rem;
 
-  background: #eae9d2;
+  background: #f0d9b5;
 }
 
 .chess-board .row {

@@ -6,11 +6,12 @@
 
 :host.is-moving {
   z-index: 9999;
-}
-
-:host.movable {
   position: absolute;
 }
+
+/* :host.movable {
+  position: absolute;
+} */
 
 .figure {
   display: flex;
@@ -22,6 +23,13 @@
   font-size: 2rem;
 }
 
-.white {
-  color: #df9b03;
+.figure--white {
+  color: #fff;
+}
+
+.figure .ng-fa-icon {
+  filter: drop-shadow( 1px 1px 2px #fff);
+}
+.figure--white .ng-fa-icon {
+  filter: drop-shadow( 1px 1px 2px #000);
 }

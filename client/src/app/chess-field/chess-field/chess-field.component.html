@@ -1,8 +1,15 @@
-<div class="chess-board" appMovableArea>
-  <div *ngFor="let row of field" class="row">
-    <div *ngFor="let item of row" class="cell">
-      <app-chess-figure appChessFigure *ngIf="item.type" [figure]="item" [activeSide]="fieldState.activeSide" [ngClass]="{'dead': !item.alive}"></app-chess-figure>
-    </div>
+<div class="chess-board" appMovableArea [movableAreaPieces]="figures">
+  <div *ngFor="let row of field; index as i" class="row">
+    <app-chess-square *ngFor="let item of row; index as j" class="cell">
+      <app-chess-figure appChessFigureBehavior
+        *ngIf="item !== '.'"
+        [piece]="item"
+        [row]="i"
+        [cell]="j"
+        [active]="turn === item.color"
+        (makeMove)="onMove($event)">
+      </app-chess-figure>
+    </app-chess-square>
   </div>
 </div>
 
