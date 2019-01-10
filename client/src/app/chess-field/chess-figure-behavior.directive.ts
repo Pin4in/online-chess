@@ -92,17 +92,19 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
     if (!this.active) {
       return false;
     }
-    const x: number = Math.abs(this.position.x / this.cellSize) > 0.65
-      ? Math.round(this.position.x / this.cellSize)
-      : this.cell
-    ;
-    const y: number = Math.abs(this.position.y / this.cellSize) > 0.65
-      ? Math.round(this.position.y / this.cellSize)
-      : this.row
-    ;
+    const x: number = Math.round(this.position.x / this.cellSize);
+    // const x: number = Math.abs(this.position.x / this.cellSize) > 0.5
+    //   ? Math.round(this.position.x / this.cellSize)
+    //   : this.cell
+    // ;
+    const y: number = Math.round(this.position.y / this.cellSize);
+    // const y: number = Math.abs(this.position.y / this.cellSize) > 0.5
+    //   ? Math.round(this.position.y / this.cellSize)
+    //   : this.row
+    // ;
+
     const from = { x: this.cell, y: this.row };
     const to = {x, y};
-
     this.makeMove.emit({from, to});
 
     // this.isMoving = false;

@@ -14,6 +14,34 @@ export class ChessService {
   private ROWS = '87654321';
   private COLUMNS = 'abcdefgh';
 
+  public indexToPos(col, row) {
+    return `${this.COLUMNS[col]}${this.ROWS[row]}`;
+  }
+
+  public getMoveObj(_from, _to) {
+    const from = this.indexToPos(_from.x, _from.y);
+    const to = this.indexToPos(_to.x, _to.y);
+    return {from, to};
+  }
+
+  public validMoves(from) {
+    return this.chess.moves({square: from, verbose: true});
+
+  }
+
+  private canMove(move) {
+    const validMoves = this.validMoves(move.from);
+    console.log('valid moves', validMoves);
+    for (let i = 0; i < validMoves.length; i++) {
+      if (validMoves[i].to === move.to) {
+        console.log('can move +1');
+        return true;
+      }
+    }
+    console.log('cann\'t move 0');
+    return false;
+  }
+
   board() {
     const asciiDiagram = this.chess.ascii();
     const cleared = asciiDiagram.replace(/(\s\s\+\-*\+)|(\d\s\|\s)|(\s\|)/gm, '').trim();
@@ -55,26 +83,6 @@ export class ChessService {
       this.updateState();
       return true;
     }
-    return false;
-  }
-
-  private getMoveObj(_from, _to) {
-    const from = `${this.COLUMNS[_from.x]}${this.ROWS[_from.y]}`;
-    const to = `${this.COLUMNS[_to.x]}${this.ROWS[_to.y]}`;
-
-    return {from, to};
-  }
-
-  private canMove(move) {
-    const validMoves = this.chess.moves({square: move.from, verbose: true});
-    console.log('valid moves', validMoves);
-    for (let i = 0; i < validMoves.length; i++) {
-      if (validMoves[i].to === move.to) {
-        console.log('can move +1');
-        return true;
-      }
-    }
-    console.log('cann\'t move 0');
     return false;
   }
 

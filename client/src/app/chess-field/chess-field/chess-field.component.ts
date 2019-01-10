@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { ChessBoardService } from '../field-state.service';
-import { ChessFigureBehaviorDirective } from '../chess-figure-behavior.directive';
 import { Subscription } from 'rxjs';
+
 import { ChessService } from '../chess.service';
+import { ChessFigureBehaviorDirective } from '../chess-figure-behavior.directive';
+import { SquareComponent } from '../square/square.component';
 
 // TODO: rename to chessBoard
 @Component({
@@ -12,44 +13,73 @@ import { ChessService } from '../chess.service';
 })
 export class ChessFieldComponent implements OnInit, AfterViewInit {
   @ViewChildren(ChessFigureBehaviorDirective) figures: QueryList<ChessFigureBehaviorDirective>;
-  constructor(private fieldState: ChessBoardService, private chess: ChessService, private cd: ChangeDetectorRef) { }
+  @ViewChildren(SquareComponent) squares: QueryList<SquareComponent>;
+  constructor(private chess: ChessService, private cd: ChangeDetectorRef) { }
   private subscriptions: Subscription[] = [];
 
-  public field;
+  public board;
   public turn;
 
-  ngOnInit() {
-    this.fieldState.generateField();
-    this.field = this.chess.board();
+  private updateState() {
+    this.board = this.chess.board();
     this.turn = this.chess.turn;
+  }
+
+  ngOnInit() {
+    this.updateState();
 
   }
   ngAfterViewInit() {
     // TODO: merge chessfield with movable-aria directive
     this.cd.detectChanges();
+    // const soms = this.squares.find(item => {
+    //   // console.log('square', this.chess.indexToPos(item.col, item.row));
+    //   if (this.chess.indexToPos(item.col, item.row) === 'a1') {
+    //     setTimeout(() => {
+    //       item.canMove = true;
+    //       // console.log(item);
+    //     });
+    //     // console.log(item);
+    //     return;
+    //   }
+    //   return false;
+    // });
 
     this.figures.changes.subscribe(() => {
       this.subscriptions.forEach(s => s.unsubscribe());
 
-      this.figures.forEach(movable => {
-        this.subscriptions.push(movable.dragEnd.subscribe(() => {
-
-          // do I need this?
-        }));
+      this.figures.forEach(figure => {
+        this.subscriptions.push(figure.dragStart.subscribe(() => this.validMoves(figure)));
+        // this.subscriptions.push(movable.dragEnd.subscribe(() => {}));
+        // this.subscriptions.push(movable.dragEnd.subscribe(() => {}));
       });
     });
 
     this.figures.notifyOnChanges();
   }
 
+  private validMoves(figure: ChessFigureBehaviorDirective) {
+    const from = this.chess.indexToPos(figure.cell, figure.row);
+    console.log('starting position', from);
+    const validMoves = this.chess.validMoves(from);
+    console.log(validMoves);
+    this.squares.find(item => {
+      const squarePos = this.chess.indexToPos(item.col, item.row);
+
+      for (let i = 0; i < validMoves.length; i++) {
+        if (squarePos === validMoves[i].to) {
+          item.canMove = true;
+          item.castling = ['k', 'q'].find(flag => {
+            return validMoves[i].flags.indexOf(flag) !== -1;
+          }) || null;
+        }
+      }
+      return false;
+    });
+  }
+
   onMove(position) {
-    console.log('move made', position);
-    // make normal move
-    // const from = 'b1';
-    // const to = 'c3';
-    // this.chess.moves({square: from});
     this.chess.move(position.from, position.to);
-    this.field = this.chess.board();
-    this.turn = this.chess.turn;
+    this.updateState();
   }
 }

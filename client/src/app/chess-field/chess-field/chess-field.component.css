@@ -1,3 +1,7 @@
+:host {
+  display: inline-block;
+  border: 6px solid #734e30;
+}
 .chess-board {
   position: relative;
   --cell-background: #b58863;
@@ -19,11 +23,6 @@
 .chess-board .cell {
   width: 50px;
   height: 50px;
-  box-shadow: 0px 0px 0px 1px var(--cell-background);
-}
-
-.chess-board .cell.active {
-  box-shadow: inset 0px 0px 7px 0px #fc9439, 0px 0px 0px 1px var(--cell-background);
 }
 
 .chess-board .row:nth-child(even) .cell:nth-child(odd) {

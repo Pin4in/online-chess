@@ -1,6 +1,6 @@
 <div class="chess-board" appMovableArea [movableAreaPieces]="figures">
-  <div *ngFor="let row of field; index as i" class="row">
-    <app-chess-square *ngFor="let item of row; index as j" class="cell">
+  <div *ngFor="let row of board; index as i" class="row">
+    <app-chess-square *ngFor="let item of row; index as j" [col]="j" [row]="i" class="cell">
       <app-chess-figure appChessFigureBehavior
         *ngIf="item !== '.'"
         [piece]="item"

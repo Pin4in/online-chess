@@ -1,1 +1,11 @@
+<div *ngIf="castling" class="castling-hint">
+  <div *ngIf="castling === 'k'" class="figure">
+    <fa-icon [icon]="rook"></fa-icon>
+    <fa-icon [icon]="king"></fa-icon>
+  </div>
+  <div *ngIf="castling === 'q'" class="figure">
+    <fa-icon [icon]="king"></fa-icon>
+    <fa-icon [icon]="rook"></fa-icon>
+  </div>
+</div>
 <ng-content></ng-content>
