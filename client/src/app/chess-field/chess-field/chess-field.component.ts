@@ -92,6 +92,8 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
         .then(() => {
           this.updateState();
         });
+    } else {
+      this.updateState();
     }
   }
 }

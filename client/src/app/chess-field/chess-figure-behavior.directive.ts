@@ -1,8 +1,6 @@
 import { Directive, ElementRef, HostBinding, HostListener, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DraggableDirective } from '../draggable/draggable.directive';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
-import { ChessBoardService } from './field-state.service';
-import { ChessFigureBehaviorComponent } from './chess-figure/chess-figure.component';
 import { ChessService } from './chess.service';
 
 

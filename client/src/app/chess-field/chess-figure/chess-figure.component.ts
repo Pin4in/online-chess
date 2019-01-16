@@ -6,7 +6,7 @@ import { faChessPawn, faChessRook, faChessQueen, faChessKnight, faChessKing, faC
   templateUrl: './chess-figure.component.html',
   styleUrls: ['./chess-figure.component.css']
 })
-export class ChessFigureBehaviorComponent implements OnInit {
+export class ChessFigureComponent implements OnInit {
   @Input() piece;
 
 
