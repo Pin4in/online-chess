@@ -1,13 +1,1 @@
-<app-chess-field></app-chess-field>
-<div class="fieldstate">
-  <div class="row" *ngFor="let row of fState.state">
-    <div *ngFor="let cell of row">
-      <div *ngIf="cell.type">
-        {{cell.type}}
-      </div>
-      <div *ngIf="!cell.type">
-          {{cell}}
-        </div>
-    </div>
-  </div>
-</div>
+<app-chess-game></app-chess-game>

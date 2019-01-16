@@ -3,6 +3,7 @@ import { DraggableDirective } from '../draggable/draggable.directive';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { ChessBoardService } from './field-state.service';
 import { ChessFigureBehaviorComponent } from './chess-figure/chess-figure.component';
+import { ChessService } from './chess.service';
 
 
 interface Position {
@@ -21,7 +22,7 @@ interface Move {
 export class ChessFigureBehaviorDirective extends DraggableDirective implements OnInit {
   @Input() row;
   @Input() cell;
-  @Input() active;
+  @Input() piece;
   @Output() makeMove = new EventEmitter<Move>();
 
   @HostBinding('style.top') get top(): SafeStyle {
@@ -38,10 +39,8 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
 
   @HostBinding('class.movable') movable = true;
   @HostBinding('class.is-moving') isMoving = false;
-  constructor(private sanitizer: DomSanitizer, private fieldState: ChessBoardService,
-    public element: ElementRef,
+  constructor(private sanitizer: DomSanitizer, public element: ElementRef, private chess: ChessService
     ) {
-    // @Host() @Self() private ctrl: ChessFigureBehaviorComponent) {
     super();
   }
   public position: Position = {x: 0, y: 0};
@@ -67,7 +66,7 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
 
   @HostListener('dragStart', ['$event'])
   onDragStart(event: PointerEvent) {
-    if (!this.active) {
+    if (this.piece.color !== this.chess.turn) {
       return false;
     }
 
@@ -79,7 +78,7 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
   }
   @HostListener('dragMove', ['$event'])
   onDragMove(event: PointerEvent) {
-    if (!this.active) {
+    if (this.piece.color !== this.chess.turn) {
       return false;
     }
 
@@ -89,7 +88,7 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
   }
   @HostListener('dragEnd', ['$event'])
   onDragEnd() {
-    if (!this.active) {
+    if (this.piece.color !== this.chess.turn) {
       return false;
     }
     const x: number = Math.round(this.position.x / this.cellSize);

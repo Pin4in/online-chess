@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+}
+
+.board {
+  flex-shrink: 0;
+}
+
+.moves-history {
+  flex-grow: 1;
+}

@@ -9,6 +9,8 @@ import { DraggableModule } from '../draggable/draggable.module';
 import { MoveValidationService } from './move-validation.service';
 import { ChessService } from './chess.service';
 import { SquareComponent } from './square/square.component';
+import { ChessGameComponent } from './chess-game/chess-game.component';
+import { GameStatusComponent } from './game-status/game-status.component';
 
 @NgModule({
   imports: [
@@ -21,7 +23,8 @@ import { SquareComponent } from './square/square.component';
     MoveValidationService,
     ChessService
   ],
-  declarations: [ChessFigureBehaviorComponent, SquareComponent, ChessFigureBehaviorDirective, ChessFieldComponent],
-  exports: [ChessFigureBehaviorComponent, SquareComponent, ChessFigureBehaviorDirective, ChessFieldComponent]
+  declarations: [ChessFigureBehaviorComponent, SquareComponent, ChessFigureBehaviorDirective,
+    ChessFieldComponent, ChessGameComponent, GameStatusComponent],
+  exports: [ChessFigureBehaviorComponent, SquareComponent, ChessFigureBehaviorDirective, ChessFieldComponent, ChessGameComponent]
 })
 export class ChessFieldModule { }

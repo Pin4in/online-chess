@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  text-align: center;
+  padding: 1rem;
+  color: #734e2c;
+  font-size: 1.5rem;
+  background: #f1d9b3;
+  margin-top: 1rem;
+  font-family: sans-serif;
+}

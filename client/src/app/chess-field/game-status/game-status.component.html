@@ -1,0 +1,18 @@
+<div *ngIf='!chess.state.gameOver && !chess.state.check'>
+  {{chess.turn === 'b' ? 'Black' : 'White'}} moves.
+</div>
+<div *ngIf='!chess.state.gameOver && chess.state.check'>
+  Check! {{chess.turn === 'b' ? 'Black' : 'White'}} moves.
+</div>
+<div *ngIf='chess.state.checkmate'>
+  Checkmate! {{chess.turn === 'w' ? 'Black' : 'White'}} team WON :)
+</div>
+<div *ngIf='chess.state.drew'>
+  Game over. 50 moves without captures and pawn moves. Draw!
+</div>
+<div *ngIf='chess.state.stalemate'>
+  Game over. Stalemate.
+</div>
+<div *ngIf='chess.state.repetition'>
+  Game over. Threefold repetition of position.
+</div>

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ChessService } from '../chess.service';
 import { ChessFigureBehaviorDirective } from '../chess-figure-behavior.directive';
 import { SquareComponent } from '../square/square.component';
+import { GameService } from '../game.service';
 
 // TODO: rename to chessBoard
 @Component({
@@ -14,7 +15,7 @@ import { SquareComponent } from '../square/square.component';
 export class ChessFieldComponent implements OnInit, AfterViewInit {
   @ViewChildren(ChessFigureBehaviorDirective) figures: QueryList<ChessFigureBehaviorDirective>;
   @ViewChildren(SquareComponent) squares: QueryList<SquareComponent>;
-  constructor(private chess: ChessService, private cd: ChangeDetectorRef) { }
+  constructor(private chess: ChessService, private cd: ChangeDetectorRef, private game: GameService) { }
   private subscriptions: Subscription[] = [];
 
   public board;
@@ -26,8 +27,12 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.updateState();
-
+    return this.game.load()
+      .then(game => {
+        console.log('game loaded', game);
+        this.board = this.chess.board(game.fen);
+        this.updateState();
+      });
   }
   ngAfterViewInit() {
     // TODO: merge chessfield with movable-aria directive
@@ -79,7 +84,14 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
   }
 
   onMove(position) {
-    this.chess.move(position.from, position.to);
-    this.updateState();
+    // TODO: on move return fen?
+    const newFen = this.chess.move(position.from, position.to);
+
+    if (newFen) {
+      this.game.move(newFen)
+        .then(() => {
+          this.updateState();
+        });
+    }
   }
 }
