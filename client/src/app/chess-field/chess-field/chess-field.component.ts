@@ -21,17 +21,20 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
   public board;
   public turn;
 
-  private updateState() {
+  private updateState(fen = null) {
+    // update with new fen
+    console.log('called');
     this.board = this.chess.board();
     this.turn = this.chess.turn;
   }
 
   ngOnInit() {
     return this.game.load()
-      .then(game => {
-        console.log('game loaded', game);
+      .subscribe((game: any) => {
         this.board = this.chess.board(game.fen);
         this.updateState();
+      }, err => {
+        console.log('game load error', err);
       });
   }
   ngAfterViewInit() {
@@ -89,9 +92,22 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
 
     if (newFen) {
       this.game.move(newFen)
-        .then(() => {
-          this.updateState();
-        });
+        .subscribe(move => {
+          console.log(move.fen);
+          this.updateState(move);
+        },
+          err => console.error('Error on make move: ' + err),
+        );
+        // .subscribe(res => {
+        //   console.log('game.move success', res);
+        //   console.log(this.updateState);
+        //   return this.updateState();
+        // }, err => {
+        //   console.log('game.move', err);
+        // });
+        // .then(() => {
+        //   this.updateState();
+        // });
     } else {
       this.updateState();
     }
