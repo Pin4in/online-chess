@@ -19,7 +19,9 @@ export class ChessService {
   private WHITE = 'w';
   private BLACK = 'b';
 
-  public turn = 'w';
+  // TODO:
+  // specify default fen, and construct board with it
+  // public currentFen = '';
   private ROWS = '87654321';
   private COLUMNS = 'abcdefgh';
 
@@ -42,20 +44,19 @@ export class ChessService {
     return {from, to};
   }
 
-  validMoves(from) {
+  legalMoves(from) {
     return this.chess.moves({square: from, verbose: true});
   }
 
-  private canMove(move) {
-    const validMoves = this.validMoves(move.from);
-    // console.log('valid moves', validMoves);
-    for (let i = 0; i < validMoves.length; i++) {
-      if (validMoves[i].to === move.to) {
-        console.log('can move +1');
-        return true;
+  private legalMove(move) {
+    const legalMoves = this.legalMoves(move.from);
+
+    for (let i = 0; i < legalMoves.length; i++) {
+      if (legalMoves[i].to === move.to) {
+        return legalMoves[i];
       }
     }
-    console.log('cann\'t move 0');
+    console.log('can\'t move 0');
     return false;
   }
 
@@ -65,7 +66,7 @@ export class ChessService {
     // - save moves - move Object;
     if (fen) {
       this.chess = new Chess(fen);
-      this.updateState();
+      this.updateGameState();
     }
     const asciiDiagram = this.chess.ascii();
     const cleared = asciiDiagram.replace(/(\s\s\+\-*\+)|(\d\s\|\s)|(\s\|)/gm, '').trim();
@@ -100,25 +101,28 @@ export class ChessService {
   }
 
   move(from, to) {
-    // TODO:
-    // support promotion, promotion: 'q'
     const moveObj = this.getMoveObj(from, to);
-    console.log(`try move form ${moveObj.from}, to ${moveObj.to}`);
-    if (this.canMove(moveObj)) {
-      this.chess.move({from: moveObj.from, to: moveObj.to});
-      this.updateState();
+
+    if (this.legalMove(moveObj)) {
+      const move = this.legalMove(moveObj);
+      // TODO: support choose promotion
+      if (move.promotion) {
+        move.promotion = 'q';
+      }
+
+      this.chess.move(move);
+
+      this.updateGameState();
       return this.chess.fen();
     }
     return false;
   }
 
-  getTurn() {
+  turn() {
     return this.chess.turn();
   }
 
-  private updateState() {
-    this.turn = this.getTurn();
-    console.log('chess', this.turn);
+  private updateGameState() {
     this.state.check = this.chess.in_check();
 
     if (this.chess.game_over()) {

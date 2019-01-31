@@ -22,8 +22,7 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
   public turn;
 
   private updateState(fen = null) {
-    // update with new fen
-    console.log('called');
+    // TODO: update with the new fen
     this.board = this.chess.board();
     this.turn = this.chess.turn;
   }
@@ -34,6 +33,7 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
         this.board = this.chess.board(game.fen);
         this.updateState();
       }, err => {
+        // TODO: add board error for template
         console.log('game load error', err);
       });
   }
@@ -68,9 +68,8 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
 
   private validMoves(figure: ChessFigureBehaviorDirective) {
     const from = this.chess.indexToPos(figure.cell, figure.row);
-    console.log('starting position', from);
-    const validMoves = this.chess.validMoves(from);
-    console.log(validMoves);
+    const validMoves = this.chess.legalMoves(from);
+
     this.squares.find(item => {
       const squarePos = this.chess.indexToPos(item.col, item.row);
 
