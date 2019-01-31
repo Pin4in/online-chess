@@ -1,18 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const db = require('./db');
-const app = express();
+const jwt = require('jwt-simple');
+const passport = require('passport');
+const router = require('express').Router();
+const db = require('../db');
 
 
-
-// const staticAssets = __dirname + '/client/dist/online-chess';
-// app
-//   .use(express.static(staticAssets));
-
-app
-  .use(cors())
-  .use(bodyParser.json())
+router
   .get('/user/:id', (req, res, next) => {
     const { id } = req.params;
 
@@ -60,33 +52,7 @@ app
         res.send(200);
       }, next)
   })
-  .get('/game/:id', (req, res, next) => {
-    const { id } = req.params;
 
-    db('games')
-      .where('id', id)
-      .first()
-      .then(game => {
-        if(!game) {
-          res.sendStatus(404);
-        }
-        res.send(game);
-      }, next)
-  })
-  .put('/game/:id', (req, res, next) => {
-    const { id } = req.params;
-    const { fen } = req.body;
-    console.log(fen)
-    db('games')
-      .where('id', id)
-      .update({ fen })
-      .then(done => {
-        if (!done) {
-          return res.sendStatus(400);
-        }
 
-        res.sendStatus(200);
-      }, next)
-  });
 
-app.listen(3000);
+module.exports = router;
