@@ -4,9 +4,9 @@ const passport  = require('passport');
 const router    = require('express').Router();
 
 function tokenForUser(user) {
-  const sub = user.id;
+  const { id } = user;
   const iat = new Date().getTime();
-  return jwt.encode({sub, iat}, config.get('jwt_secret'));
+  return jwt.encode({id, iat}, config.get('jwt_secret'));
 }
 
 router

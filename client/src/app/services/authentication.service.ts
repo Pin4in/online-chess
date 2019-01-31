@@ -20,7 +20,7 @@ export class AuthenticationService {
     return this.http.post<any>(`${config.publicApi}/login`, { email, password })
       .pipe(map(user => {
         if (user && user.token) {
-          localStorage.setItem('token', JSON.stringify(user.token));
+          localStorage.setItem('token', user.token);
         }
 
         return user;

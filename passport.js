@@ -1,7 +1,7 @@
 const config         = require('config');
 const db             = require('./db');
 const passport       = require('passport');
-const jwtStrategy    = require('passport-jwt').Strategy;
+const JwtStrategy    = require('passport-jwt').Strategy;
 const extractJwt     = require('passport-jwt').ExtractJwt;
 const LocalStrategy  = require('passport-local').Strategy;
 const bcrypt         = require('bcrypt-nodejs');
@@ -17,13 +17,13 @@ const signupOptions = {
   passReqToCallback : true
 };
 
-passport.use(new jwtStrategy(jwtOptions, jwtLogin));
+passport.use(new JwtStrategy(jwtOptions, jwtLogin));
 passport.use(new LocalStrategy({ usernameField: 'email'}, login));
 passport.use('signup', new LocalStrategy(signupOptions, signup))
 
 function jwtLogin(payload, done) {
   db('users')
-    .where('id', payload.sub)
+    .where('id', payload.id)
     .first()
     .then(user => {
         done(null, user)
@@ -42,7 +42,7 @@ function login(email, password, done) {
       done(null, user);
     })
     .catch(err => {
-      console.log('error occured!');
+      console.log('Passport login', err);
       done(err)
     });
 }

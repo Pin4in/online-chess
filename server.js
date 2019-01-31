@@ -38,6 +38,8 @@ app
   .use(passport.initialize())
   .use(passport.session())
   .use(auth)
+  // Protected routes
+  .use('/api/*', passport.authenticate('jwt', { session: false }))
   .use('/api', userApi)
   .use('/api', gameApi)
 ;
