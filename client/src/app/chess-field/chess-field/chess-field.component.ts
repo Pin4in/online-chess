@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList,
+  AfterViewInit, ChangeDetectorRef, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ChessService } from '../chess.service';
 import { ChessFigureBehaviorDirective } from '../chess-figure-behavior.directive';
 import { SquareComponent } from '../square/square.component';
-import { GameService } from '../game.service';
+import { GameService } from '../../services/game.service';
 
 // TODO: rename to chessBoard
 @Component({
@@ -12,11 +13,14 @@ import { GameService } from '../game.service';
   templateUrl: './chess-field.component.html',
   styleUrls: ['./chess-field.component.css']
 })
-export class ChessFieldComponent implements OnInit, AfterViewInit {
+export class ChessFieldComponent implements AfterViewInit, OnChanges {
   @ViewChildren(ChessFigureBehaviorDirective) figures: QueryList<ChessFigureBehaviorDirective>;
   @ViewChildren(SquareComponent) squares: QueryList<SquareComponent>;
   constructor(private chess: ChessService, private cd: ChangeDetectorRef, private game: GameService) { }
   private subscriptions: Subscription[] = [];
+
+  @Input() fen: string = null;
+  @Output() saveMove = new EventEmitter();
 
   public board;
   public turn;
@@ -27,39 +31,22 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
     this.turn = this.chess.turn;
   }
 
-  ngOnInit() {
-    return this.game.load()
-      .subscribe((game: any) => {
-        this.board = this.chess.board(game.fen);
-        this.updateState();
-      }, err => {
-        // TODO: add board error for template
-        console.log('game load error', err);
-      });
+  ngOnChanges() {
+    if (this.fen) {
+      this.board = this.chess.board(this.fen);
+      this.updateState();
+    }
   }
+
   ngAfterViewInit() {
     // TODO: merge chessfield with movable-aria directive
     this.cd.detectChanges();
-    // const soms = this.squares.find(item => {
-    //   // console.log('square', this.chess.indexToPos(item.col, item.row));
-    //   if (this.chess.indexToPos(item.col, item.row) === 'a1') {
-    //     setTimeout(() => {
-    //       item.canMove = true;
-    //       // console.log(item);
-    //     });
-    //     // console.log(item);
-    //     return;
-    //   }
-    //   return false;
-    // });
 
     this.figures.changes.subscribe(() => {
       this.subscriptions.forEach(s => s.unsubscribe());
 
       this.figures.forEach(figure => {
         this.subscriptions.push(figure.dragStart.subscribe(() => this.validMoves(figure)));
-        // this.subscriptions.push(movable.dragEnd.subscribe(() => {}));
-        // this.subscriptions.push(movable.dragEnd.subscribe(() => {}));
       });
     });
 
@@ -85,30 +72,13 @@ export class ChessFieldComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onMove(position) {
-    // TODO: on move return fen?
+  makeMove(position) {
     const newFen = this.chess.move(position.from, position.to);
 
     if (newFen) {
-      this.game.move(newFen)
-        .subscribe(move => {
-          console.log(move.fen);
-          this.updateState(move);
-        },
-          err => console.error('Error on make move: ' + err),
-        );
-        // .subscribe(res => {
-        //   console.log('game.move success', res);
-        //   console.log(this.updateState);
-        //   return this.updateState();
-        // }, err => {
-        //   console.log('game.move', err);
-        // });
-        // .then(() => {
-        //   this.updateState();
-        // });
-    } else {
-      this.updateState();
+      this.saveMove.emit(newFen);
     }
+
+    this.updateState();
   }
 }

@@ -16,6 +16,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SignupComponent } from './signup/signup.component';
     LoginComponent,
     HomeComponent,
     SignupComponent,
+    GameComponent,
   ],
 
   imports: [

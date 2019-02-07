@@ -64,10 +64,9 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
 
   @HostListener('dragStart', ['$event'])
   onDragStart(event: PointerEvent) {
-    if (this.piece.color !== this.chess.turn) {
+    if (this.piece.color !== this.chess.turn()) {
       return false;
     }
-
     this.isMoving = true;
     this.startPosition = {
       x: event.clientX - this.position.x,
@@ -76,7 +75,7 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
   }
   @HostListener('dragMove', ['$event'])
   onDragMove(event: PointerEvent) {
-    if (this.piece.color !== this.chess.turn) {
+    if (this.piece.color !== this.chess.turn()) {
       return false;
     }
 
@@ -86,7 +85,7 @@ export class ChessFigureBehaviorDirective extends DraggableDirective implements 
   }
   @HostListener('dragEnd', ['$event'])
   onDragEnd() {
-    if (this.piece.color !== this.chess.turn) {
+    if (this.piece.color !== this.chess.turn()) {
       return false;
     }
     const x: number = Math.round(this.position.x / this.cellSize);

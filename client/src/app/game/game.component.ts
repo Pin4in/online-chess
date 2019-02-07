@@ -4,11 +4,11 @@ import { GameService } from '../services/game.service';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-game-ui',
-  templateUrl: './game-ui.component.html',
-  styleUrls: ['./game-ui.component.css']
+  selector: 'app-game',
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.css']
 })
-export class GameUiComponent implements OnInit {
+export class GameComponent implements OnInit {
 
   constructor(
     private game: GameService,
