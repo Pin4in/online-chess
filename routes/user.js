@@ -2,9 +2,17 @@ const jwt = require('jwt-simple');
 const passport = require('passport');
 const router = require('express').Router();
 const db = require('../db');
+const pick = require('lodash').pick;
 
 
 router
+  .get('/user/', (req, res, next) => {
+    const user = pick(req.user, ['id', 'username', 'email'])
+    if (!user) {
+      res.sendStatus(401);
+    }
+    res.send(user);
+  })
   .get('/user/:id', (req, res, next) => {
     const { id } = req.params;
 

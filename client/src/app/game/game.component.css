@@ -1,5 +1,7 @@
 :host {
-  display: flex;
+  height: 100%;
+  display: block;
+  padding-top: 60px;
 }
 
 .board {

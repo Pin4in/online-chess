@@ -1,18 +1,15 @@
 const router = require('express').Router();
 const db = require('../db')
-const passport =require('passport');
 
 
 router
   .get('/games', (req, res, next) => {
-    const userId = 1;
+    const { id } = req.user;
 
     db('games')
-      .where({ 'owner': userId })
-      .orWhere({ competitor: userId })
-      // .first()
+      .where({ 'owner': id })
+      .orWhere({ competitorId: id })
       .then(games => {
-        console.log(games);
         if (games.length > 0) {
           res.send(games);
         } else {
@@ -21,8 +18,6 @@ router
       }, next)
   })
   .get('/game/:id', (req, res, next) => {
-  // .get('/game/:id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    console.log('    loading game')
     const { id } = req.params;
     const userId = 1;
     db('games')
@@ -52,15 +47,13 @@ router
   .put('/game/:id', (req, res, next) => {
     const { id } = req.params;
     const { fen } = req.body;
-    console.log(fen)
     db('games')
       .where('id', id)
       .update({ fen })
       .then(done => {
         if (!done) {
-          return res.sendStatus(400);
+          return res.sendStatus(500);
         }
-        // res.sendStatus(200);
         res.send({fen});
       }, next)
   });

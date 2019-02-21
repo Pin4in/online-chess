@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { ChessService } from '../chess.service';
 import { ChessFigureBehaviorDirective } from '../chess-figure-behavior.directive';
 import { SquareComponent } from '../square/square.component';
-import { GameService } from '../../services/game.service';
 
 // TODO: rename to chessBoard
 @Component({
@@ -16,7 +15,7 @@ import { GameService } from '../../services/game.service';
 export class ChessFieldComponent implements AfterViewInit, OnChanges {
   @ViewChildren(ChessFigureBehaviorDirective) figures: QueryList<ChessFigureBehaviorDirective>;
   @ViewChildren(SquareComponent) squares: QueryList<SquareComponent>;
-  constructor(private chess: ChessService, private cd: ChangeDetectorRef, private game: GameService) { }
+  constructor(private chess: ChessService, private cd: ChangeDetectorRef) { }
   private subscriptions: Subscription[] = [];
 
   @Input() fen: string = null;
@@ -25,16 +24,14 @@ export class ChessFieldComponent implements AfterViewInit, OnChanges {
   public board;
   public turn;
 
-  private updateState(fen = null) {
-    // TODO: update with the new fen
-    this.board = this.chess.board();
+  private updateState(fen) {
+    this.board = this.chess.board(fen);
     this.turn = this.chess.turn;
   }
 
   ngOnChanges() {
     if (this.fen) {
-      this.board = this.chess.board(this.fen);
-      this.updateState();
+      this.updateState(this.fen);
     }
   }
 
@@ -73,12 +70,11 @@ export class ChessFieldComponent implements AfterViewInit, OnChanges {
   }
 
   makeMove(position) {
+    // don't update gameUI before save. Should move chess.move to the BE.
     const newFen = this.chess.move(position.from, position.to);
 
     if (newFen) {
       this.saveMove.emit(newFen);
     }
-
-    this.updateState();
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '../services/game.service';
-import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-game',
@@ -13,7 +13,8 @@ export class GameComponent implements OnInit {
   constructor(
     private game: GameService,
     private route: ActivatedRoute,
-    private location: Location) { }
+    private router: Router
+  ) {}
 
   public fen: string;
   private gameId: string;
@@ -21,26 +22,31 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.gameId = this.route.snapshot.paramMap.get('id');
 
-    this.game.load(this.gameId)
-      .subscribe((game: any) => {
-        this.fen = game.fen;
-      }, err => {
-        // TODO: add board error for template
-        console.log('game load error', err);
-      });
+
+    this.game.userConnected().subscribe(data => {
+      console.log('connected', data);
+    });
+
+    this.game.loadGame(this.gameId);
+
+    this.game.handleNotFound().subscribe(() => {
+      this.router.navigate(['/']);
+    });
+
+    this.game.gameUpdates.subscribe(data => {
+      this.fen = data.fen;
+    });
+
+    // TODO: handle game_update_error
   }
 
   saveMove(fen) {
-    this.game.update(fen, this.gameId)
-      .subscribe(move => {
-        this.fen = move.fen;
-      },
-        err => console.error('Error on make move: ' + err),
-      );
+    this.game.newMove({ fen, id: this.gameId});
   }
 
   goBack() {
-    this.location.back();
+    // this.game._newMove();
+    // this.location.back();
   }
 
 }

@@ -3,31 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { config } from '../config';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import { UserService } from './user.service';
+
+interface Game {
+  competitorId: number;
+  fen: string;
+  owner: boolean;
+  side: string;
+  title: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private socket: Socket, private user: UserService) { }
 
-  /**
-   * Update game
-   * @param fen - current fen
-   * @param id - game id
-   */
-  update(fen: string, id: string) {
-    return this.http.put<any>(`${config.privateApi}/game/${id}`, { fen })
-      .pipe(catchError(this.handleError('move')));
-  }
-
-  /**
-   * Load game
-   * @param id - game id
-   */
-  load(id: string) {
-    return this.http.get<any>(`${config.privateApi}/game/${id}`)
-      .pipe(catchError(this.handleError('load game')));
-  }
+  gameUpdates = this.socket.fromEvent<Game>('game_update');
 
   /**
    * Load games
@@ -52,6 +45,31 @@ export class GameService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
+  }
+
+  userConnected() {
+    return this.socket.fromEvent('connected');
+  }
+
+  loadGame(id) {
+    const data = {
+      userId: this.user.user.id,
+      id
+    };
+
+    return this.socket.emit('start_game', data);
+  }
+
+  handleNotFound() {
+    return this.socket.fromEvent('game_not_found');
+  }
+
+  handleGameUpdateError() {
+    return this.socket.fromEvent('game_update_error');
+  }
+
+  newMove(data) {
+    return this.socket.emit('new_move', data);
   }
 
 }

@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+const http = require('http').Server(app);
 const passport = require('passport');
 const config = require('config');
+const socket = require('./libs/socket')
 
 const auth = require('./routes/auth');
 const userApi = require('./routes/user');
@@ -28,9 +30,12 @@ app
   .use('/api', gameApi)
 ;
 
+// start socket
+socket(http);
+
 
 // ERROR HANDLER
 require('./handlers/99-errors').init(app);
 
 
-module.exports = app;
+module.exports = http;

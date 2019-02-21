@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -9,7 +10,6 @@ import { AppComponent } from './app.component';
 import { DraggableModule } from './draggable/draggable.module';
 import { ChessFieldModule } from './chess-field/chess-field.module';
 import { AppRoutingModule } from './/app-routing.module';
-import { GameUiComponent } from './game-ui/game-ui.component';
 
 import { UnauthorizedInterceptor } from './helpers/unauthorized.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
@@ -17,11 +17,13 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { GameComponent } from './game/game.component';
+import { config } from './config';
+
+const socketConfig: SocketIoConfig = { url: config.publicApi, options: {} };
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameUiComponent,
     LoginComponent,
     HomeComponent,
     SignupComponent,
@@ -36,6 +38,7 @@ import { GameComponent } from './game/game.component';
     DraggableModule,
     ChessFieldModule,
     AppRoutingModule,
+    SocketIoModule.forRoot(socketConfig)
   ],
 
   providers: [
