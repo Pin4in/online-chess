@@ -1,4 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from '../services/game.service';
+import { UserService } from '../services/user.service';
+
+interface Game {
+  id: number;
+  competitorId: number;
+  date: string;
+  fen: string;
+  owner: number;
+  ownerSide: string;
+  title: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -7,9 +19,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private game: GameService, private user: UserService) { }
+  games: Game[];
 
   ngOnInit() {
+    this.game.games().subscribe(data => {
+      this.games = data;
+    });
   }
 
 }

@@ -1,65 +1,9 @@
-.chess-board {
-  --cell-background: #acacac;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-
-  width: 400px;
+:host {
+  height: 100%;
+  display: block;
+  background-color: #0F3257;
 }
 
-.chess-board .row {
-  display: flex;
-  width: 400px;
-}
-
-.chess-board .cell {
-  width: 50px;
-  height: 50px;
-  box-shadow: 0px 0px 0px 1px var(--cell-background);
-}
-
-.chess-board .cell.active {
-  box-shadow: inset 0px 0px 7px 0px #fc9439, 0px 0px 0px 1px var(--cell-background);
-}
-
-.chess-board .row:nth-child(even) .cell:nth-child(odd) {
-  background-color: var(--cell-background);
-}
-
-.chess-board .row:nth-child(odd) .cell:nth-child(even) {
-  background-color: var(--cell-background);
-}
-
-
-.playboard {
-  position: relative;
-}
-
-
-.draggable {
-  user-select: none;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-}
-
-
-.fieldstate {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(199, 199, 199, 0.3);
-  width: 500px;
-  padding: 2rem;
-}
-
-.fieldstate .row {
-  display: flex;
-}
-
-.fieldstate .row > div {
-  flex-grow: 1;
+:host .container {
+  height: 100%;
 }

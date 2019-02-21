@@ -1,3 +1,15 @@
-<p>
-  home works!
-</p>
+<h1 class="title">List of games</h1>
+<ul class="games" *ngIf="games">
+  <li *ngFor="let game of games" class='game'>
+    <a routerLink="/game/{{game.id}}" class='game__link'>
+      <span>{{game.title}}</span>
+    </a>
+    <!-- <button title="delete game"
+      (click)="delete(game)">x</button> -->
+  </li>
+</ul>
+
+<p *ngIf="!games" class="message">You don't have active games. Lets create one?</p>
+
+  <!-- <button title="new game"
+        (click)="newGame()">New Game</button> -->

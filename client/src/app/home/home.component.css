@@ -1,0 +1,51 @@
+:host {
+  height: 100%;
+  display: block;
+  padding-top: 60px;
+  background-image: url(/assets/figures.png);
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-size: 206;
+}
+
+.title,
+.message {
+  color: #fff;
+  font-weight: 300;
+}
+.title {
+  text-transform: uppercase;
+}
+
+
+.games {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.game {
+  margin-top: 2rem;
+  display: flex;
+  max-width: 350px;
+}
+
+.game__link {
+  flex-grow: 1;
+  padding: 1rem;
+  background: white;
+  border-radius: .5rem;
+  color: #000;
+  text-decoration: none;
+}
+.game__link:hover {
+  box-shadow: inset 0px 0px 10px 2px #2196F3;
+}
+
+.game__link:focus, {
+  outline: 0;
+}
+
+.game__delete {
+  flex-shrink: 0;
+  width: 100px;
+}
