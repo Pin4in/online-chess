@@ -19,20 +19,29 @@ function socket(server) {
         .then(game => {
           if(game.owner !== userId && game.competitorId !== userId) {
             socket.emit('game_not_found');
-            console.log('socket:start_game - game_not_found')
             return;
           }
+
+          const owner = game.owner === userId;
+          let side;
+
+          if (!owner) {
+            side = game.ownerSide === 'w' ? 'b' : 'w';
+          } else {
+            side = game.ownerSide;
+          }
+
           const _game = {
             fen: game.fen,
-            owner: game.owner === userId,
+            owner,
             competitorId: game.competitorId,
-            side: game.ownerSide,
+            side,
             title: game.title
           }
-          socketRoom = game.id;
-          socket.join(game.id);
-          socket.emit('game_update', _game)
-          console.log('socket:start_game - game_update', _game)
+          const socketRoom = `room ${game.id}`;
+
+          socket.join(socketRoom);
+          socket.emit('game_data', _game)
         })
     })
 
@@ -51,8 +60,8 @@ function socket(server) {
             console.log('socket:new_move - game_update_error');
             return;
           }
-          console.log('socket:new_move - game_update');
-          io.to(socketRoom).emit('game_update', { fen });
+          const socketRoom = `room ${id}`;
+          io.to(socketRoom).emit('game_update', fen);
         })
 
     })

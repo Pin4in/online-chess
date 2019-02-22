@@ -18,15 +18,24 @@ export class ChessFieldComponent implements AfterViewInit, OnChanges {
   constructor(private chess: ChessService, private cd: ChangeDetectorRef) { }
   private subscriptions: Subscription[] = [];
 
-  @Input() fen: string = null;
+  @Input() fen: string;
+  @Input() userSide: string;
   @Output() saveMove = new EventEmitter();
 
   public board;
-  public turn;
 
   private updateState(fen) {
-    this.board = this.chess.board(fen);
-    this.turn = this.chess.turn;
+    this.board = this.chess.board(fen).map(row => {
+      for (let i = 0; i < row.length; i++) {
+        const activeFigure = row[i].color === this.chess.turn();
+        const userFigure = this.userSide === row[i].color;
+
+        if (activeFigure && userFigure) {
+          row[i].active = true;
+        }
+      }
+      return row;
+    });
   }
 
   ngOnChanges() {
@@ -55,8 +64,13 @@ export class ChessFieldComponent implements AfterViewInit, OnChanges {
     const validMoves = this.chess.legalMoves(from);
 
     this.squares.find(item => {
-      const squarePos = this.chess.indexToPos(item.col, item.row);
+      const userTurn = this.chess.turn() === this.userSide;
+      const activeFigure = this.board[figure.row][figure.cell].color === this.chess.turn();
+      if (!userTurn || !activeFigure) {
+        return false;
+      }
 
+      const squarePos = this.chess.indexToPos(item.col, item.row);
       for (let i = 0; i < validMoves.length; i++) {
         if (squarePos === validMoves[i].to) {
           item.canMove = true;
@@ -75,6 +89,10 @@ export class ChessFieldComponent implements AfterViewInit, OnChanges {
 
     if (newFen) {
       this.saveMove.emit(newFen);
+    } else {
+      // temporary fix for field reset if user did not make any move but touched the figure.
+      this.updateState(this.fen);
     }
+
   }
 }

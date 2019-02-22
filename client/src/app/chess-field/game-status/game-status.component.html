@@ -1,5 +1,5 @@
 <div *ngIf='!chess.state.gameOver && !chess.state.check'>
-  {{chess.turn === 'b' ? 'Black' : 'White'}} moves.
+  {{chess.turn() === 'b' ? 'Black' : 'White'}} moves.
 </div>
 <div *ngIf='!chess.state.gameOver && chess.state.check'>
   Check! {{chess.turn === 'b' ? 'Black' : 'White'}} moves.

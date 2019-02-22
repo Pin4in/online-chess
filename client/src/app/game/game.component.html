@@ -1,9 +1,15 @@
+<div class='header'>
+    <p>Hello <span class="capitalize">{{username}}</span>.<br>
+    You are in game: <span class="capitalize">{{title}}</span></p>
+    <p>Your side: {{ userSide }}</p>
+</div>
 <div class="board">
   <app-chess-field
     [fen]="fen"
+    [userSide]="userSide"
     (saveMove)="saveMove($event)"></app-chess-field>
   <app-game-status></app-game-status>
 </div>
-<div class="moves-history">
+<!-- <div class="moves-history">
   <h2>Moves history</h2>
-</div>
+</div> -->

@@ -20,7 +20,8 @@ interface Game {
 export class GameService {
   constructor(private http: HttpClient, private socket: Socket, private user: UserService) { }
 
-  gameUpdates = this.socket.fromEvent<Game>('game_update');
+  gameUpdates = this.socket.fromEvent<string>('game_update');
+  gameData = this.socket.fromEvent<Game>('game_data');
 
   /**
    * Load games

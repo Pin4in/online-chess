@@ -3,6 +3,12 @@
   display: block;
   padding-top: 60px;
 }
+.header {
+  color: white;
+}
+.capitalize {
+  text-transform: capitalize;
+}
 
 .board {
   flex-shrink: 0;
