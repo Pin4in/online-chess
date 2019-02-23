@@ -37,7 +37,7 @@ function login(email, password, done) {
     .first()
     .then((user) => {
       if(!user || !bcrypt.compareSync(password, user.password)) {
-        return done(null, false, { message: 'invalid email and password combination'});
+        return done(null, false, { message: 'Invalid email and password combination'});
       }
       done(null, user);
     })
@@ -53,10 +53,10 @@ function signup(req, name, password, done) {
     .first()
     .then((user) => {
       if (user) {
-        return done(null, false, {message: 'an account with that email has already been created'});
+        return done(null, false, {message: 'An account with that email has already been created'});
       }
       if (password !== req.body.password2) {
-        return done(null, false, {message: "passwords don't match"})
+        return done(null, false, {message: "Passwords don't match"})
       }
 
       const newUser = {
