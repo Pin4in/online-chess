@@ -3,17 +3,52 @@
   display: block;
   padding-top: 60px;
 }
-.header {
-  color: white;
-}
+
 .capitalize {
   text-transform: capitalize;
 }
 
 .board {
   flex-shrink: 0;
+  text-align: center;
 }
 
 .moves-history {
   flex-grow: 1;
+}
+
+
+.go-back {
+  display: block;
+  background: #0e3158;
+  padding: 1rem;
+  width: 20%;
+  border-radius: .4rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: white;
+  cursor: default;
+  text-decoration: none;
+  text-align: center;
+  max-width: 300px;
+}
+
+.go-back:hover {
+  background: #18487d;
+}
+
+
+.game-info {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.75rem;
+  max-width: 412px;
+  text-align: center;
+}
+
+.game-info .title {
+  margin-bottom: .35rem;
+  font-size: 1.5rem;
 }

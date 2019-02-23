@@ -59,9 +59,8 @@ export class GameComponent implements OnInit {
     this.game.newMove({ fen, id: this.gameId});
   }
 
-  goBack() {
-    // this.game._newMove();
-    // this.location.back();
+  goHome() {
+    this.router.navigate(['/']);
   }
 
 }

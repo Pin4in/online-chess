@@ -2,6 +2,7 @@
   height: 100%;
   display: block;
   padding-top: 60px;
+  background-color: #0F3257;
   background-image: url(/assets/figures.png);
   background-position: right bottom;
   background-repeat: no-repeat;
@@ -41,7 +42,7 @@
   box-shadow: inset 0px 0px 10px 2px #2196F3;
 }
 
-.game__link:focus, {
+.game__link:focus {
   outline: 0;
 }
 

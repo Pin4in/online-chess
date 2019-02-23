@@ -1,13 +1,16 @@
-<div class='header'>
-    <p>Hello <span class="capitalize">{{username}}</span>.<br>
-    You are in game: <span class="capitalize">{{title}}</span></p>
-    <p>Your side: {{ userSide }}</p>
-</div>
-<div class="board">
-  <app-chess-field
-    [fen]="fen"
-    [userSide]="userSide"
-    (saveMove)="saveMove($event)"></app-chess-field>
+<a routerLink="/" class="go-back">you games</a>
+<div class="container">
+  <div class='game-info'>
+    <div class="title capitalize">{{title}}</div>
+    <div class="side">You are playing {{ userSide === 'w' ? 'white' : 'black'}}</div>
+  </div>
+  <div class="board">
+    <app-chess-field
+      [fen]="fen"
+      [userSide]="userSide"
+      (saveMove)="saveMove($event)"
+    ></app-chess-field>
+  </div>
   <app-game-status></app-game-status>
 </div>
 <!-- <div class="moves-history">

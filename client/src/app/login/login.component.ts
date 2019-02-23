@@ -4,20 +4,26 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '../services/authentication.service';
+import { UserService } from '../services/user.service';
 
-@Component({templateUrl: 'login.component.html'})
+@Component({
+  selector: 'app-login',
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.css']
+})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
   returnUrl: string;
-  error = '';
+  error: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) {}
+    private authenticationService: AuthenticationService,
+    private user: UserService) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -48,10 +54,20 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
+          this.loading = false;
+
+          if (!data.authenticated) {
+            this.error = data.message;
+          }
+
+          console.log('user object', data);
+          this.user.user = Object.assign({}, data.user);
+          // TODO: add user to user service
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          this.error = error;
+          console.log('unable to login', error);
+          this.error = 'Oops, something went wrong. Try again later.';
           this.loading = false;
         });
   }

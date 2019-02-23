@@ -1,0 +1,82 @@
+:host {
+  height: 100%;
+  display: block;
+  padding-top: 20vh;
+  background-color: #0F3257;
+  background-image: url(/assets/figures.png);
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-size: 206px;
+}
+
+.title {
+  color: #fff;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+
+.login-form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  padding: .375rem .75rem;
+  font-size: 1.1rem;
+  display: block;
+  border-radius: .3rem;
+  border-width: 0;
+  width: 100%;
+}
+
+.form-control:focus {
+  outline-color: #93d2f3;
+}
+
+.form-control.is-invalid {
+  outline-color: #ffcccc;
+  outline-offset: -2px;
+  outline-width: 5px;
+  outline-style: auto;
+}
+
+.form-error {
+  color: #ffcccc;
+  text-align: center;
+  margin-bottom: .5rem;
+  text-transform: capitalize;
+}
+
+.form-hint {
+  margin-top: .3rem;
+  text-align: center;
+  color: #ffcccc;
+}
+
+.btn {
+  padding: .375rem .75rem;
+  border-width: 0;
+  display: block;
+  width: 100%;
+  background: #e0b464;
+  color: white;
+  border-radius: .3rem;
+}
+.btn:hover {
+  background: #daa74c;
+}
+
+.btn:focus {
+  outline-color: #93d2f3;
+}
+
+.btn:disabled {
+  background-color: #cac0b0;
+}
