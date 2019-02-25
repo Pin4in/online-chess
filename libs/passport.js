@@ -6,6 +6,9 @@ const extractJwt     = require('passport-jwt').ExtractJwt;
 const LocalStrategy  = require('passport-local').Strategy;
 const bcrypt         = require('bcrypt-nodejs');
 
+const mongoose = require('../libs/mongoose');
+const User = require('../models/User');
+
 
 const jwtOptions = {
   jwtFromRequest: extractJwt.fromHeader('authorization'),
@@ -19,27 +22,32 @@ const signupOptions = {
 
 passport.use(new JwtStrategy(jwtOptions, jwtLogin));
 passport.use(new LocalStrategy({ usernameField: 'email'}, login));
-passport.use('signup', new LocalStrategy(signupOptions, signup))
+// passport.use('signup', new LocalStrategy(signupOptions, signup))
 
 function jwtLogin(payload, done) {
-  db('users')
-    .where('id', payload.id)
-    .first()
-    .then(user => {
-        done(null, user)
-    })
+  if (!mongoose.Types.ObjectId.isValid(payload.id)) {
+    return done(null, false, { message: 'User not found'});
+  }
+
+  User.findById(payload.id)
+    .then(user => done(null, user))
     .catch(err => done(err));
 }
 
 function login(email, password, done) {
-  db('users')
-    .where('email', email)
-    .first()
-    .then((user) => {
-      if(!user || !bcrypt.compareSync(password, user.password)) {
-        return done(null, false, { message: 'Invalid email and password combination'});
+  User.findOne({ email })
+    .then(user => {
+      const message = 'Invalid email and password combination';
+      if (!user) {
+        return done(null, false, { message });
       }
-      done(null, user);
+
+      const isValidPassword = user.checkPassword(password);
+      if (!isValidPassword) {
+        return done(null, false, { message });
+      }
+
+      return done(null, user, { message: 'Welcome!' });
     })
     .catch(err => {
       console.log('Passport login', err);
