@@ -1,19 +1,21 @@
+const defaultFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
 const game1 = {
-  fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+  fen: defaultFen,
   _owner: 'Paper',
   _competitor: 'Rock',
   ownerSide: 'w',
   title: 'Paper vs Rock'
 }
 const game2 = {
-  fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+  fen: defaultFen,
   _owner: 'Paper',
   _competitor: 'Scissors',
   ownerSide: 'b',
   title: 'Paper vs Scissors'
 }
 const game3 = {
-  fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+  fen: defaultFen,
   _owner: 'Scissors',
   _competitor: 'Rock',
   ownerSide: 'w',

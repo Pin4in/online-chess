@@ -2,12 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { config } from '../config';
+import { User } from '../models/User';
 
-interface User {
-  id: string;
-  username: string;
-  email: string;
-}
 @Injectable({ providedIn: 'root' })
 export class UserService {
   constructor(private http: HttpClient) { }

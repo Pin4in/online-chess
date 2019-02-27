@@ -3,12 +3,7 @@ import { GameService } from '../services/game.service';
 import { UserService } from '../services/user.service';
 
 interface Game {
-  id: number;
-  competitorId: number;
-  date: string;
-  fen: string;
-  owner: number;
-  ownerSide: string;
+  _id: string;
   title: string;
 }
 

@@ -54,7 +54,7 @@ export class GameService {
 
   loadGame(id) {
     const data = {
-      userId: this.user.user.id,
+      userId: this.user.user._id,
       id
     };
 

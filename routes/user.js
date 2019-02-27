@@ -27,14 +27,14 @@ const loadById = (req, res, next) => {
 };
 
 router
-  .get('/user/', (req, res, next) => {
-    const user = pick(req.user, ['username', 'email'])
+  .get('/user/', (req, res) => {
+    const user = pick(req.user, ['username', 'email', '_id'])
     if (!user) {
       res.sendStatus(401);
     }
     res.send(user);
   })
-  .get('/user/:id', loadById, (req, res, next) => {
+  .get('/user/:id', loadById, (req, res) => {
     const user = pick(req.userById, ['email', 'username']);
     res.send(user);
   })

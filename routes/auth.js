@@ -46,7 +46,7 @@ router
       req.logIn(user, { session: false }, function(err) {
         if (err) { return next(err); }
 
-        const serializedUser = pick(user, ['email', 'username']);
+        const serializedUser = pick(user, ['email', 'username', '_id']);
         return res.json({
           token: tokenForUser(user),
           user: serializedUser,
