@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { GameComponent } from './game/game.component';
 import { config } from './config';
+import { HeaderComponent } from './header/header.component';
 
 const socketConfig: SocketIoConfig = { url: config.publicApi, options: {} };
 
@@ -28,6 +29,7 @@ const socketConfig: SocketIoConfig = { url: config.publicApi, options: {} };
     HomeComponent,
     SignupComponent,
     GameComponent,
+    HeaderComponent,
   ],
 
   imports: [

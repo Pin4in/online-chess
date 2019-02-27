@@ -1,0 +1,23 @@
+.header {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header__auth {
+  display: flex;
+  align-items: center;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.header__auth__action {
+  background: #fff;
+  border-radius: .2rem;
+  margin-left: .75rem;
+}
+
+
+:host.dark .header__auth {
+  color: white;
+}

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../services/game.service';
-import { UserService } from '../services/user.service';
 
 interface Game {
   _id: string;
@@ -14,7 +13,7 @@ interface Game {
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private game: GameService, private user: UserService) { }
+  constructor(private game: GameService) { }
   games: Game[];
 
   ngOnInit() {
@@ -22,5 +21,4 @@ export class HomeComponent implements OnInit {
       this.games = data;
     });
   }
-
 }

@@ -1,4 +1,5 @@
 <div class="container">
+  <app-header  class="dark"></app-header>
   <h1 class="title">List of games</h1>
   <ul class="games" *ngIf="games">
     <li *ngFor="let game of games" class='game'>
@@ -11,7 +12,4 @@
   </ul>
 
   <p *ngIf="!games" class="message">You don't have active games. Lets create one?</p>
-
-    <!-- <button title="new game"
-          (click)="newGame()">New Game</button> -->
 </div>
