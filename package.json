@@ -5,7 +5,12 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fill-db": "node fixtures/index.js"
+    "fill-db": "node fixtures/index.js",
+    "heroku-postbuild": "cd client && npm install"
+  },
+  "engines": {
+    "node": "10.15.0",
+    "npm": "6.4.1"
   },
   "author": "",
   "license": "ISC",
