@@ -5,7 +5,7 @@
   Check! {{chess.turn === 'b' ? 'Black' : 'White'}} moves
 </div>
 <div *ngIf='chess.state.checkmate'>
-  Checkmate! {{chess.turn === 'w' ? 'Black' : 'White'}} team WON :)
+  Checkmate! {{chess.turn === 'w' ? 'White' : 'Black'}} team WON :)
 </div>
 <div *ngIf='chess.state.draw'>
   Game over. 50 moves without captures and pawn moves. Draw!
